@@ -11,7 +11,6 @@ ARG TS3_AUDIOBOT_FLAVOUR="TS3AudioBot_dotnetcore3.1.zip"
 RUN apk add \
     opus-dev \
     yt-dlp \
-    youtube-dl \
     ffmpeg
 
 # download and install the TS3AudioBot in the specified version and flavour

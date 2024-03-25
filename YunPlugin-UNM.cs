@@ -27,6 +27,7 @@ public class YunPlugin : IBotPlugin
     public static int playMode;
     public static string WangYiYunAPI_Address;
     public static string UNM_Address;
+    public static string realIP;
     List<long> playlist = new List<long>();
     public static int Playlocation = 0;
     private readonly SemaphoreSlim playlock = new SemaphoreSlim(1, 1);
@@ -151,7 +152,14 @@ public class YunPlugin : IBotPlugin
         SetPlplayManager(playManager);
         SetTs3Client(ts3Client);
         bool songFound = false;
-        string urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30";
+        if(realIP == "")
+        {
+            string urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30";
+        }
+        else
+        {
+            string urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30&realIP={realIP}";
+        }
         string searchJson = await HttpGetAsync(urlSearch);
         yunSearchSong yunSearchSong = JsonSerializer.Deserialize<yunSearchSong>(searchJson);
         string[] splitArguments = arguments.Split(" ");
