@@ -76,6 +76,9 @@ public class YunPlugin : IBotPlugin
         string unmAddressValue = MyIni.Configs["YunBot"].Get("UNM_Address");
         UNM_Address = string.IsNullOrEmpty(unmAddressValue) ? "" : unmAddressValue;
 
+        string realIPValue = MyIni.Configs["YunBot"].Get("realIP");
+        realIP = string.IsNullOrEmpty(realIPValue) ? "" : realIPValue;
+
         Console.WriteLine(playMode);
         Console.WriteLine(cookies);
         Console.WriteLine(WangYiYunAPI_Address);
