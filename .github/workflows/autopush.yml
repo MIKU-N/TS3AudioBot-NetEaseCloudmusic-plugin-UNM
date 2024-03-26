@@ -24,7 +24,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Zip the Build
-      run: zip -r ${{ secrets.ReleaseZipName }} ./AppName/bin/Release/netcoreapp3.1/
+      run: zip -r ${{ secrets.ReleaseZipName }} /home/runner/work/TS3AudioBot-NetEaseCloudmusic-plugin-UNM/TS3AudioBot-NetEaseCloudmusic-plugin-UNM/bin/Release/netcoreapp3.1/
 
     - name: Create Release and Upload Release Asset
       uses: softprops/action-gh-release@v1
