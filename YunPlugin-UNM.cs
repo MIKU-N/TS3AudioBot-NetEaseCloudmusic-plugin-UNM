@@ -83,6 +83,7 @@ public class YunPlugin : IBotPlugin
         Console.WriteLine(cookies);
         Console.WriteLine(WangYiYunAPI_Address);
         Console.WriteLine(UNM_Address);
+        Console.WriteLine(realIP);
 
     }
 
@@ -155,6 +156,7 @@ public class YunPlugin : IBotPlugin
         SetPlplayManager(playManager);
         SetTs3Client(ts3Client);
         bool songFound = false;
+        string urlSearch = "";
         if(realIP == "")
         {
             string urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30";
