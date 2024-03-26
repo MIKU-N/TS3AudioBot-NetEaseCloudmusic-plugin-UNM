@@ -159,11 +159,11 @@ public class YunPlugin : IBotPlugin
         string urlSearch = "";
         if(realIP == "")
         {
-            string urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30";
+             urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30";
         }
         else
         {
-            string urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30&realIP={realIP}";
+             urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30&realIP={realIP}";
         }
         string searchJson = await HttpGetAsync(urlSearch);
         yunSearchSong yunSearchSong = JsonSerializer.Deserialize<yunSearchSong>(searchJson);
