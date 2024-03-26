@@ -11,7 +11,8 @@ TS3AudioBot-NetEaseCloudmusic-UnblockNeteaseMusic-plugin
 `playMode=`是播放模式   
 `WangYiYunAPI_Address=`是网易云API地址   
 `cookies1=`是保存在你本地的身份验证，通过二维码登录获取。（不需要修改）   
-`UNM_Address=`是 UnblockNeteaseMusic 服务的API地址。    
+`UNM_Address=`是 UnblockNeteaseMusic 服务的API地址。   
+`realIP=` 是针对海外IP被屏蔽的问题而设置，可填写任意国内IP
 
 ## 替换插件文件后需要重启TS3AudioBot服务！！！
 
