@@ -156,15 +156,7 @@ public class YunPlugin : IBotPlugin
         SetPlplayManager(playManager);
         SetTs3Client(ts3Client);
         bool songFound = false;
-        string urlSearch = "";
-        if(realIP == "")
-        {
-             urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30";
-        }
-        else
-        {
-             urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30&realIP={realIP}";
-        }
+        string urlSearch = $"{WangYiYunAPI_Address}/search?keywords={arguments}&limit=30&realIP={realIP}";
         string searchJson = await HttpGetAsync(urlSearch);
         yunSearchSong yunSearchSong = JsonSerializer.Deserialize<yunSearchSong>(searchJson);
         string[] splitArguments = arguments.Split(" ");
@@ -214,7 +206,8 @@ public class YunPlugin : IBotPlugin
         SetInvoker(invoker);
         SetPlplayManager(playManager);
         SetTs3Client(ts3Client);
-        string urlSearch = $"{WangYiYunAPI_Address}/playlist/detail?id={arguments}";
+        // 增加RealIP参数
+        string urlSearch = $"{WangYiYunAPI_Address}/playlist/detail?id={arguments}&realIP={realIP}";
         string searchJson = await HttpGetAsync(urlSearch);
         GedanDetail gedanDetail = JsonSerializer.Deserialize<GedanDetail>(searchJson);
         string gedanshuliang = gedanDetail.playlist.trackCount.ToString();
@@ -230,7 +223,8 @@ public class YunPlugin : IBotPlugin
                 i = gedanDetail.playlist.trackCount < 50 ? gedanDetail.playlist.trackCount : gedanDetail.playlist.trackCount - 50 * loopCount;
                 // 构建查询URL，如果歌单的歌曲数量小于50，那么偏移量就是0，否则偏移量就是查询的数量
                 int offset = gedanDetail.playlist.trackCount < 50 ? 0 : i;
-                urlSearch = $"{WangYiYunAPI_Address}/playlist/track/all?id={arguments}&limit=50&offset={offset}";
+                //此处不做鉴别，因为此参数为空不影响查询结果
+                urlSearch = $"{WangYiYunAPI_Address}/playlist/track/all?id={arguments}&limit=50&offset={offset}&realIP={realIP}";
                 searchJson = await HttpGetAsync(urlSearch);
                 GeDan geDan1 = JsonSerializer.Deserialize<GeDan>(searchJson);
                 for (int j = 0; j < i; j++){
@@ -239,7 +233,8 @@ public class YunPlugin : IBotPlugin
                 }
                 break;
             }
-            urlSearch = $"{WangYiYunAPI_Address}/playlist/track/all?id={arguments}&limit=50&offset={i}";
+            //此处不做鉴别，因为此参数为空不影响查询结果
+            urlSearch = $"{WangYiYunAPI_Address}/playlist/track/all?id={arguments}&limit=50&offset={i}&realIP={realIP}";
             searchJson = await HttpGetAsync(urlSearch);
             GeDan geDan = JsonSerializer.Deserialize<GeDan>(searchJson);
             for (int j = 0; j < 50; j++){
@@ -318,15 +313,16 @@ public class YunPlugin : IBotPlugin
         await playlock.WaitAsync();
         try {
             long musicId = id;
-            string musicCheckUrl = $"{WangYiYunAPI_Address}/check/music?id={musicId}";
+            //预构造URL
+            string musicCheckUrl = $"{WangYiYunAPI_Address}/check/music?id={musicId}&realIP={realIP}";
             string searchMusicCheckJson = await HttpGetAsync(musicCheckUrl);
             MusicCheck musicCheckJson = JsonSerializer.Deserialize<MusicCheck>(searchMusicCheckJson);
 
             // 根据音乐检查结果获取音乐播放URL
             string musicUrl = musicCheckJson.success.ToString() == "False" ? await GetcheckMusicUrl(musicId, true) : await GetMusicUrl(musicId, true);
 
-            // 构造获取音乐详情的URL
-            string musicDetailUrl = $"{WangYiYunAPI_Address}/song/detail?ids={musicId}";
+            // 预构造音乐详情URL
+            string musicDetailUrl = $"{WangYiYunAPI_Address}/song/detail?ids={musicId}&realIP={realIP}";
             string musicDetailJson = await HttpGetAsync(musicDetailUrl);
             MusicDetail musicDetail = JsonSerializer.Deserialize<MusicDetail>(musicDetailJson);
 
@@ -477,7 +473,8 @@ public class YunPlugin : IBotPlugin
 
     public static async Task<string> GetMusicUrl(string id, bool usingCookie = false)
     {
-        string url = $"{WangYiYunAPI_Address}/song/url?id={id}";
+        //初始化url
+        string url = $"{WangYiYunAPI_Address}/song/url?id={id}&realIP={realIP}";
         if (usingCookie && !string.IsNullOrEmpty(cookies))
         {
             url += $"&cookie={cookies}";
